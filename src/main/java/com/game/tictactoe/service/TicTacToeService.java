@@ -1,6 +1,6 @@
 package com.game.tictactoe.service;
 
-import com.game.tictactoe.model.GameRequest;
+import com.game.tictactoe.factory.GameResponseFactory;import com.game.tictactoe.model.GameRequest;
 import com.game.tictactoe.model.GameResponse;
 import com.game.tictactoe.model.GameStatus;
 import com.game.tictactoe.ruleengine.GameRuleEngine;
@@ -20,12 +20,13 @@ public class TicTacToeService {
 
     private final GameRuleEngine ruleEngine;
     private final GameValidator validator;
+    private final GameResponseFactory factory;
 
     public GameResponse newGame() {
         List<String> initialBoard = IntStream.range(MIN_INDEX, DEFAULT_ARRAY_SIZE)
                 .mapToObj(String::valueOf)
                 .toList();
-        return buildResponse(initialBoard, GameStatus.IN_PROGRESS, GAME_INIT_MESSAGE);
+        return factory.create(initialBoard, GameStatus.IN_PROGRESS, GAME_INIT_MESSAGE);
     }
 
     public GameResponse continueGame(GameRequest request) {
@@ -35,25 +36,17 @@ public class TicTacToeService {
 
         if (ruleEngine.isGameOver(board)) {
             GameStatus currentStatus = ruleEngine.checkWinner(board) ? GameStatus.GAME_OVER_WIN : GameStatus.GAME_OVER_DRAW;
-            return buildResponse(board, currentStatus, GAME_FINISHED_MESSAGE);
+            return factory.create(board, currentStatus, GAME_FINISHED_MESSAGE);
         }
 
         String currentPlayer = ruleEngine.determineCurrentPlayer(board);
         board.set(position, currentPlayer);
         if (ruleEngine.checkWinner(board)) {
-            return buildResponse(board, GameStatus.GAME_OVER_WIN, GAME_WIN_MESSAGE.formatted(currentPlayer));
+            return factory.create(board, GameStatus.GAME_OVER_WIN, GAME_WIN_MESSAGE.formatted(currentPlayer));
         } else if (ruleEngine.isBoardFull(board)) {
-            return buildResponse(board, GameStatus.GAME_OVER_DRAW, GAME_DRAW_MESSAGE);
+            return factory.create(board, GameStatus.GAME_OVER_DRAW, GAME_DRAW_MESSAGE);
         }
         String nextPlayer = "X".equals(currentPlayer) ? "O" : "X";
-        return buildResponse(board, GameStatus.IN_PROGRESS, GAME_MOVE_ACCEPTED_MESSAGE.formatted(nextPlayer));
-    }
-
-    private GameResponse buildResponse(List<String> board, GameStatus status, String message) {
-        return GameResponse.builder()
-                .board(board)
-                .status(status)
-                .message(message)
-                .build();
+        return factory.create(board, GameStatus.IN_PROGRESS, GAME_MOVE_ACCEPTED_MESSAGE.formatted(nextPlayer));
     }
 }

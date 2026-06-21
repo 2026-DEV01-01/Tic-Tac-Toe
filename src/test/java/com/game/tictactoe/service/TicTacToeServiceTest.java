@@ -1,5 +1,6 @@
 package com.game.tictactoe.service;
 
+import com.game.tictactoe.factory.GameResponseFactory;
 import com.game.tictactoe.model.GameRequest;
 import com.game.tictactoe.model.GameResponse;
 import com.game.tictactoe.model.GameStatus;
@@ -30,6 +31,9 @@ class TicTacToeServiceTest {
     @Mock
     private TicTacToeValidator validator;
 
+    @Mock
+    private GameResponseFactory responseFactory;
+
     @InjectMocks
     private TicTacToeService service;
 
@@ -39,7 +43,17 @@ class TicTacToeServiceTest {
     @BeforeEach
     void setUp() {
         initialBoard = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8");
-        validRequest = new GameRequest(initialBoard, 0); // Assuming standard constructor setup
+        validRequest = new GameRequest(initialBoard, 0);
+        lenient().when(responseFactory.create(anyList(), any(GameStatus.class), anyString()))
+                .thenAnswer(invocation -> {
+                    List<String> board = invocation.getArgument(0);
+                    GameStatus status = invocation.getArgument(1);
+                    String message = invocation.getArgument(2);
+                    return new GameResponse()
+                            .board(board)
+                            .status(status)
+                            .message(message);
+                });
     }
 
     @Test
