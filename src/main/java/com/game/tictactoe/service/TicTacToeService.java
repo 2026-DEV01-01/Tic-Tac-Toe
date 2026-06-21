@@ -12,21 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.game.tictactoe.constants.TicTacToeConstants.*;
+
 @Service
 @RequiredArgsConstructor
 public class TicTacToeService {
-
-    public static final String GAME_INIT_MESSAGE = "New game started. X goes first.";
-    public static final String GAME_FINISHED_MESSAGE = "The game is already over.";
-    public static final String GAME_WIN_MESSAGE = "Player %s wins the game!";
-    public static final String GAME_DRAW_MESSAGE = "The game is a Draw!";
-    public static final String GAME_MOVE_ACCEPTED_MESSAGE = "Move accepted. %s's turn.";
 
     private final GameRuleEngine ruleEngine;
     private final GameValidator validator;
 
     public GameResponse newGame() {
-        List<String> initialBoard = IntStream.range(0, 9)
+        List<String> initialBoard = IntStream.range(MIN_INDEX, DEFAULT_ARRAY_SIZE)
                 .mapToObj(String::valueOf)
                 .toList();
         return buildResponse(initialBoard, GameStatus.IN_PROGRESS, GAME_INIT_MESSAGE);

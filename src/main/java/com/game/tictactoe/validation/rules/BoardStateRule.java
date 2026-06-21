@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+import static com.game.tictactoe.constants.TicTacToeConstants.*;
+
 @Component
 @Order(1)
 public class BoardStateRule implements GameValidationRule {
 
-    public static final int DEFAULT_ARRAY_SIZE = 9;
-    public static final String ERR_MSG_NULL_BOARD_STATE = "Invalid board state. Board cannot be null.";
-    public static final String ERR_MSG_NON_SQUARE_BOARD = "Invalid board state. Array size must be a perfect square (e.g., 9, 16).";
 
     @Override
     public void validate(GameRequest request) {

@@ -5,13 +5,11 @@ import com.game.tictactoe.model.GameRequest;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import static com.game.tictactoe.constants.TicTacToeConstants.*;
+
 @Component
 @Order(2)
 public class BoundsAndAvailabilityRule implements GameValidationRule {
-
-    public static final int MIN_INDEX = 0;
-    public static final String ERR_MSG_POSITION_TAKEN = "Position already taken! Choose an empty spot.";
-    public static final String ERR_MSG_POSITION_OUT_OF_BOUNDS = "Out of bounds! Please choose a position between 0 and %d.";
 
     @Override
     public void validate(GameRequest request) {
