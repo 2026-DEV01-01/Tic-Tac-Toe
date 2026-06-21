@@ -20,6 +20,9 @@ public class TicTacToeService {
                 if (checkWinner(board)) {
                     System.out.println("Player " + currentPlayer + " wins the game!");
                     gameRunning = false;
+                } else if (isBoardFull(board)) {
+                    System.out.println("The game is a Draw!");
+                    gameRunning = false;
                 } else {
                     currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
                 }
@@ -58,5 +61,14 @@ public class TicTacToeService {
             }
         }
         return false;
+    }
+
+    public boolean isBoardFull(char[] board) {
+        for (int i = 0; i < 9; i++) {
+            if (board[i] != 'X' && board[i] != 'O') {
+                return false;
+            }
+        }
+        return true;
     }
 }

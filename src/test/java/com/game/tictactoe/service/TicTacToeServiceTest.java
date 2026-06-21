@@ -80,4 +80,18 @@ class TicTacToeServiceTest {
         service.continueGame(board, 8); // O tries to play
         assertNotEquals('O', board[8]); // Ensure move wasn't registered
     }
+
+    @Test
+    @DisplayName("Play Game: Game is a draw when all squares are filled without a winner")
+    void whenAllSquaresFilledWithNoWinner_thenGameIsADraw() {
+        char[] board = service.newGame();
+        int[] drawMoves = {0, 1, 2, 4, 3, 5, 7, 6, 8};
+        for (int move : drawMoves) {
+            service.continueGame(board, move);
+        }
+
+        service.continueGame(board, 0);
+        assertFalse(service.isBoardFull(new char[]{'0','1','2','3','4','5','6','7','8'}));
+        assertTrue(service.isBoardFull(board));
+    }
 }
