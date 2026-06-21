@@ -51,4 +51,19 @@ class TicTacToeServiceTest {
         service.continueGame(board, 1);
         assertEquals('O', board[1]);
     }
+
+    @Test
+    @DisplayName("Play Game: Reject attempt to play out of bounds (< 0 or > 8)")
+    void whenPlayingOutOfBounds_thenMoveIsRejectedAndTurnNotLost() {
+        char[] board = service.newGame();
+        service.continueGame(board, -1);
+        service.continueGame(board, 9);
+        service.continueGame(board, 100);
+
+        service.continueGame(board, 0);
+        assertEquals('X', board[0], "It should still be X's turn after out of bounds attempts");
+
+        service.continueGame(board, 1);
+        assertEquals('O', board[1], "It should be O's turn now");
+    }
 }

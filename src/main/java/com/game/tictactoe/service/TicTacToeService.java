@@ -30,7 +30,10 @@ public class TicTacToeService {
     }
 
     private boolean inputValidator(char[] board, int position) {
-        if (board[position] == 'X' || board[position] == 'O') {
+        if (position < 0 || position > 8) {
+            System.out.println("Out of bounds!");
+            return false;
+        } else if (board[position] == 'X' || board[position] == 'O') {
             System.out.println("Position already taken!");
             return false;
         }
