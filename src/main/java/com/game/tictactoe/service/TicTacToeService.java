@@ -15,8 +15,10 @@ public class TicTacToeService {
 
     public char[] continueGame(char[] board, int position) {
         if (gameRunning) {
-            board[position] = currentPlayer;
-            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            if (inputValidator(board, position)) {
+                board[position] = currentPlayer;
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            }
         }
         return board;
     }
@@ -25,5 +27,13 @@ public class TicTacToeService {
         for (int i = 0; i < 9; i++) {
             board[i] = (char) ('0' + i);
         }
+    }
+
+    private boolean inputValidator(char[] board, int position) {
+        if (board[position] == 'X' || board[position] == 'O') {
+            System.out.println("Position already taken!");
+            return false;
+        }
+        return true;
     }
 }

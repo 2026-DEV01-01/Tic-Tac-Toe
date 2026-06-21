@@ -27,7 +27,6 @@ class TicTacToeServiceTest {
         assertEquals('X', board[0]);
     }
 
-
     @Test
     @DisplayName("Play Game: Players alternate between X and O")
     void whenContinuingGame_thenPlayersAlternateTurns() {
@@ -39,5 +38,17 @@ class TicTacToeServiceTest {
         assertEquals('X', board[0]);
         assertEquals('O', board[1]);
         assertEquals('X', board[2]);
+    }
+
+    @Test
+    @DisplayName("Play Game: Reject attempt to play on an already occupied position")
+    void whenPlayingOnPlayedPosition_thenMoveIsRejected() {
+        char[] board = service.newGame();
+        service.continueGame(board, 0);
+        service.continueGame(board, 0);
+        assertEquals('X', board[0]);
+
+        service.continueGame(board, 1);
+        assertEquals('O', board[1]);
     }
 }
