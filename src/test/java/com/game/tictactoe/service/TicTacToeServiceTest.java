@@ -66,4 +66,18 @@ class TicTacToeServiceTest {
         service.continueGame(board, 1);
         assertEquals('O', board[1], "It should be O's turn now");
     }
+
+    @Test
+    @DisplayName("Play Game: Game ends and player wins when three marks align")
+    void whenThreeInARow_thenGameEndsAndPlayerWins() {
+        char[] board = service.newGame();
+        service.continueGame(board, 0);
+        service.continueGame(board, 3);
+        service.continueGame(board, 1);
+        service.continueGame(board, 4);
+        service.continueGame(board, 2); // X Wins
+
+        service.continueGame(board, 8); // O tries to play
+        assertNotEquals('O', board[8]); // Ensure move wasn't registered
+    }
 }
