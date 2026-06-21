@@ -16,7 +16,7 @@ import static com.game.tictactoe.constants.TicTacToeConstants.*;
 
 @Service
 @RequiredArgsConstructor
-public class TicTacToeService {
+public class TicTacToeService implements GameService{
 
     private final GameRuleEngine ruleEngine;
     private final GameValidator validator;
