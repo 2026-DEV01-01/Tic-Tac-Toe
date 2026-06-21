@@ -16,6 +16,7 @@ public class TicTacToeService {
     public char[] continueGame(char[] board, int position) {
         if (gameRunning) {
             board[position] = currentPlayer;
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
         }
         return board;
     }
