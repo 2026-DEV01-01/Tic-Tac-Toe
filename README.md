@@ -84,6 +84,8 @@ Once the application is running, you can interactively test the endpoints withou
 
 Returns a pristine board state and sets up the starting player (Player X).
 
+Note: You can pass an optional size query parameter (e.g., ?size=4) to generate a dynamic $N \times N$ board. If omitted, it defaults to a standard $3 \times 3$ board.
+
 **Response (200 OK):**
 
 ```json
@@ -162,5 +164,3 @@ mvn clean test-compile org.pitest:pitest-maven:mutationCoverage -Djacoco.skip=tr
 View the mutation coverage report to see killed and survived mutants by opening:
 `target/pit-reports/index.html` in your web browser.
 ---
-
-*Developed by Lejoy George *
