@@ -7,29 +7,33 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.game.tictactoe.constants.TicTacToeConstants.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final URI BLANK_TYPE_URI = URI.create("about:blank");
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
-                "The request payload failed structural validation."
+                VALIDATION_ERROR_DETAIL
         );
-        problemDetail.setTitle("Validation Failed");
-        problemDetail.setType(URI.create("about:blank"));
+        problemDetail.setTitle(VALIDATION_ERROR_TITLE);
+        problemDetail.setType(BLANK_TYPE_URI);
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
+                .toList();
 
-        problemDetail.setProperty("errors", errors);
+        problemDetail.setProperty(ERRORS_PROPERTY_KEY, errors);
         return problemDetail;
     }
 
@@ -39,25 +43,25 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 ex.getMessage()
         );
-        problemDetail.setTitle("Invalid Game Operation");
-        problemDetail.setType(URI.create("about:blank"));
+        problemDetail.setTitle(GAME_ERROR_TITLE);
+        problemDetail.setType(BLANK_TYPE_URI);
         if (ex.getGameRequest() != null) {
-            problemDetail.setProperty("failedRequestContext", ex.getGameRequest());
+            problemDetail.setProperty(FAILED_REQUEST_CONTEXT_KEY, ex.getGameRequest());
         }
         return problemDetail;
     }
 
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleAllOtherExceptions(Exception ex) throws Exception {
-        if (ex instanceof org.springframework.web.servlet.resource.NoResourceFoundException) {
-            throw ex;
+    public ProblemDetail handleAllOtherExceptions(Exception ex) throws NoResourceFoundException {
+        if (ex instanceof NoResourceFoundException noResourceEx) {
+            throw noResourceEx;
         }
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                "An unexpected error occurred processing your request."
+                INTERNAL_ERROR_DETAIL
         );
-        problemDetail.setTitle("Internal Server Error");
-        problemDetail.setType(URI.create("about:blank"));
+        problemDetail.setTitle(INTERNAL_ERROR_TITLE);
+        problemDetail.setType(BLANK_TYPE_URI);
         return problemDetail;
     }
 }

@@ -25,7 +25,7 @@ public class BoundsAndAvailabilityRule implements GameValidationRule {
         }
 
         var targetSpot = board.get(position);
-        if ("X".equalsIgnoreCase(targetSpot) || "O".equalsIgnoreCase(targetSpot)) {
+        if (PLAYER_X.equalsIgnoreCase(targetSpot) || PLAYER_O.equalsIgnoreCase(targetSpot)) {
             throw TicTacToeException.builder()
                     .message(ERR_MSG_POSITION_TAKEN)
                     .request(request)

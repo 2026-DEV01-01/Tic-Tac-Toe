@@ -22,7 +22,6 @@ public class BoardStateRule implements GameValidationRule {
                     .request(request)
                     .build();
         }
-
         int totalSpots = request.getBoard().size();
         int boardSize = (int) Math.sqrt(totalSpots);
 
