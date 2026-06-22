@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.net.URI;
 import java.util.List;
 
 import static com.game.tictactoe.constants.TicTacToeConstants.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    private static final URI BLANK_TYPE_URI = URI.create("about:blank");
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -26,7 +23,6 @@ public class GlobalExceptionHandler {
                 VALIDATION_ERROR_DETAIL
         );
         problemDetail.setTitle(VALIDATION_ERROR_TITLE);
-        problemDetail.setType(BLANK_TYPE_URI);
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -44,7 +40,6 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
         problemDetail.setTitle(GAME_ERROR_TITLE);
-        problemDetail.setType(BLANK_TYPE_URI);
         if (ex.getGameRequest() != null) {
             problemDetail.setProperty(FAILED_REQUEST_CONTEXT_KEY, ex.getGameRequest());
         }
@@ -56,12 +51,8 @@ public class GlobalExceptionHandler {
         if (ex instanceof NoResourceFoundException noResourceEx) {
             throw noResourceEx;
         }
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+        return ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                INTERNAL_ERROR_DETAIL
-        );
-        problemDetail.setTitle(INTERNAL_ERROR_TITLE);
-        problemDetail.setType(BLANK_TYPE_URI);
-        return problemDetail;
+                INTERNAL_ERROR_DETAIL);
     }
 }

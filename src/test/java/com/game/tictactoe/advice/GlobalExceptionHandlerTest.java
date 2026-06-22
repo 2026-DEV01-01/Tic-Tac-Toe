@@ -56,6 +56,7 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.title").value("Invalid Game Operation"))
                 .andExpect(jsonPath("$.detail").value("Position already taken!"))
                 .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.type").value("about:blank"))
                 .andExpect(jsonPath("$.failedRequestContext.position").value(0));
     }
 
@@ -77,6 +78,7 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.title").value("Invalid Game Operation"))
                 .andExpect(jsonPath("$.detail").value("Position already taken!"))
                 .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.type").value("about:blank"))
                 .andExpect(jsonPath("$.failedRequestContext").doesNotExist());
     }
 
@@ -94,7 +96,8 @@ class GlobalExceptionHandlerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                 .andExpect(jsonPath("$.title").value("Internal Server Error"))
                 .andExpect(jsonPath("$.detail").value("An unexpected error occurred processing your request."))
-                .andExpect(jsonPath("$.status").value(500));
+                .andExpect(jsonPath("$.status").value(500))
+                .andExpect(jsonPath("$.type").value("about:blank"));
     }
 
     @Test
@@ -113,6 +116,7 @@ class GlobalExceptionHandlerTest {
         assertEquals(BAD_REQUEST.value(), problemDetail.getStatus());
         assertEquals("Validation Failed", problemDetail.getTitle());
         assertEquals("The request payload failed structural validation.", problemDetail.getDetail());
+        assertEquals(java.net.URI.create("about:blank"), problemDetail.getType());
 
         var errors = (java.util.List<?>) problemDetail.getProperties().get("errors");
         assertNotNull(errors);

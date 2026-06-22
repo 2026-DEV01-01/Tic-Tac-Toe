@@ -86,4 +86,11 @@ class TicTacToeRuleEngineTest {
         assertFalse(ruleEngine.isBoardFull(board1));
         assertFalse(ruleEngine.isBoardFull(board2));
     }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination for Player O")
+    void givenWinningBoardPlayerO_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("O", "O", "O", "3", "4", "5", "6", "7", "8");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
 }

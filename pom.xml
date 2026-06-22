@@ -44,6 +44,11 @@
 			<artifactId>jakarta.validation-api</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -155,6 +160,38 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>1.19.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-junit5-plugin</artifactId>
+						<version>1.2.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<parseSurefireArgLine>false</parseSurefireArgLine>
+					<targetClasses>
+						<param>com.game.tictactoe.*</param>
+					</targetClasses>
+					<targetTests>
+						<param>com.game.tictactoe.*</param>
+					</targetTests>
+					<jvmArgs>
+						<param>-XX:+EnableDynamicAgentLoading</param>
+						<param>-Xmx1024m</param>
+					</jvmArgs>
+					<threads>4</threads>
+					<excludedClasses>
+						<param>com.game.tictactoe.TictactoeapiApplication</param>
+						<param>com.game.tictactoe.api.*</param>
+						<param>com.game.tictactoe.model.*</param>
+					</excludedClasses>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
