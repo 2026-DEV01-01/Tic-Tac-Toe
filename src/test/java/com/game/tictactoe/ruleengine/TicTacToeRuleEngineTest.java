@@ -70,4 +70,20 @@ class TicTacToeRuleEngineTest {
         List<String> board = Arrays.asList("X", "O", "2", "3", "4", "5", "6", "7", "8");
         assertFalse(ruleEngine.isGameOver(board), "Game should not be over; it is still in progress");
     }
+
+    @Test
+    @DisplayName("Rules: Returns false when board has a null cell")
+    void givenBoardWithNullCell_whenCheckingIfFull_thenReturnFalse() {
+        List<String> board = Arrays.asList("X", "O", null, "X", "O", "O", "O", "X", "X");
+        assertFalse(ruleEngine.isBoardFull(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Returns false when board has cells that collide with X/O hashCodes but are not X/O")
+    void givenBoardWithHashCodeCollisions_whenCheckingIfFull_thenReturnFalse() {
+        List<String> board1 = Arrays.asList("X", "O", "\u00019", "X", "O", "O", "O", "X", "X");
+        List<String> board2 = Arrays.asList("X", "O", "\u00010", "X", "O", "O", "O", "X", "X");
+        assertFalse(ruleEngine.isBoardFull(board1));
+        assertFalse(ruleEngine.isBoardFull(board2));
+    }
 }

@@ -143,4 +143,18 @@ class TicTacToeServiceTest {
         assertEquals("Move accepted. O's turn.", response.getMessage());
         assertEquals("X", response.getBoard().get(0)); // Proves the move was placed
     }
+
+    @Test
+    @DisplayName("Valid Move for Player O (Game Continues): Updates board, toggles player to X, and returns IN_PROGRESS")
+    void givenStandardMovePlayerO_whenContinuingGame_thenReturnInProgress() {
+        when(ruleEngine.isGameOver(anyList())).thenReturn(false);
+        when(ruleEngine.determineCurrentPlayer(anyList())).thenReturn("O");
+        when(ruleEngine.checkWinner(anyList())).thenReturn(false);
+        when(ruleEngine.isBoardFull(anyList())).thenReturn(false);
+
+        GameResponse response = service.continueGame(validRequest);
+        assertEquals(GameStatus.IN_PROGRESS, response.getStatus());
+        assertEquals("Move accepted. X's turn.", response.getMessage());
+        assertEquals("O", response.getBoard().get(0)); // Proves the move was placed
+    }
 }
