@@ -22,12 +22,22 @@ public class BoardStateRule implements GameValidationRule {
                     .request(request)
                     .build();
         }
+
         int totalSpots = request.getBoard().size();
         int boardSize = (int) Math.sqrt(totalSpots);
 
         if (boardSize * boardSize != totalSpots || totalSpots < DEFAULT_ARRAY_SIZE) {
             throw TicTacToeException.builder()
                     .message(ERR_MSG_NON_SQUARE_BOARD)
+                    .request(request)
+                    .build();
+        }
+
+        boolean hasInvalidCells = request.getBoard().stream()
+                .anyMatch(cell -> cell == null || !cell.matches("\\d+|[XO]"));
+        if (hasInvalidCells) {
+            throw TicTacToeException.builder()
+                    .message(ERR_MSG_INVALID_BOARD_CHARACTERS)
                     .request(request)
                     .build();
         }

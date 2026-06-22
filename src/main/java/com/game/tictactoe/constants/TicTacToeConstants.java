@@ -20,6 +20,7 @@ public final class TicTacToeConstants {
 
     public static final String ERR_MSG_NULL_BOARD_STATE = "Invalid board state. Board cannot be null.";
     public static final String ERR_MSG_NON_SQUARE_BOARD = "Invalid board state. Array size must be a perfect square (e.g., 9, 16).";
+    public static final String ERR_MSG_INVALID_BOARD_CHARACTERS = "Invalid board state. only integers 0-9, X, or O are permitted.";
 
     public static final String ERR_MSG_POSITION_TAKEN = "Position already taken! Choose an empty spot.";
     public static final String ERR_MSG_POSITION_OUT_OF_BOUNDS = "Out of bounds! Please choose a position between 0 and %d.";

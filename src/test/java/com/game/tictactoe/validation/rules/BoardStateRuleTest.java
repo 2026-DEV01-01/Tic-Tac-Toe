@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.Arrays;import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,14 +26,15 @@ class BoardStateRuleTest {
     @Test
     @DisplayName("Should pass when the board is a valid 3x3 grid (9 spots)")
     void validate_shouldPass_whenBoardIs9Spots() {
-        request.setBoard(Arrays.asList(new String[9]));
+        request.setBoard(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8"));
         assertDoesNotThrow(() -> rule.validate(request));
     }
 
     @Test
     @DisplayName("Should pass when the board is a valid dynamically sized 4x4 grid (16 spots)")
     void validate_shouldPass_whenBoardIs16Spots() {
-        request.setBoard(Arrays.asList(new String[16]));
+        request.setBoard(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7",
+                "8", "9", "10", "11", "12", "13", "14", "15"));
         assertDoesNotThrow(() -> rule.validate(request));
     }
 
@@ -59,5 +60,24 @@ class BoardStateRuleTest {
         request.setBoard(Arrays.asList(new String[10]));
         TicTacToeException exception = assertThrows(TicTacToeException.class, () -> rule.validate(request));
         assertEquals("Invalid board state. Array size must be a perfect square (e.g., 9, 16).", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Should pass when the board contains multi-character numerals (e.g., for a 4x4 board)")
+    void validate_shouldPass_whenBoardContainsMultiCharacterNumerals() {
+        List<String> valid16Board = Arrays.asList(
+                "0", "1", "2", "3", "4", "5", "6", "7",
+                "8", "9", "10", "11", "12", "13", "14", "15"
+        );
+        request.setBoard(valid16Board);
+        assertDoesNotThrow(() -> rule.validate(request));
+    }
+
+    @Test
+    @DisplayName("Should throw exception when multi-character strings contain letters (e.g., 'XX' or '10A')")
+    void validate_shouldThrowException_whenBoardContainsInvalidMultiCharacterStrings() {
+        request.setBoard(Arrays.asList("0", "1", "XX", "3", "10A", "5", "6", "7", "8"));
+        TicTacToeException exception = assertThrows(TicTacToeException.class, () -> rule.validate(request));
+        assertEquals("Invalid board state. only integers 0-9, X, or O are permitted.", exception.getMessage());
     }
 }
