@@ -21,6 +21,15 @@ paths:
       summary: Initialize a new game
       description: Returns a pristine board state and sets up the starting player (Player X).
       operationId: initGame
+      parameters:
+        - name: size
+          in: query
+          description: The dimension of the board (e.g., 3 for 3x3). Defaults to 3.
+          required: false
+          schema:
+            type: integer
+            minimum: 3
+            default: 3
       responses:
         '200':
           description: Game successfully initialized
@@ -69,7 +78,6 @@ components:
           type: array
           description: A 1D array representing the 3x3 tic-tac-toe board.
           minItems: 9
-          maxItems: 9
           items:
             type: string
             maxLength: 1
@@ -77,7 +85,6 @@ components:
           type: integer
           description: The index (0-8) on the board where the player wants to place their mark.
           minimum: 0
-          maximum: 8
 
     GameResponse:
       type: object

@@ -59,7 +59,7 @@ class TicTacToeServiceTest {
     @Test
     @DisplayName("New Game: Successfully initializes a new 9-slot board")
     void whenNewGame_thenInitializeBoardAndReturnInProgress() {
-        GameResponse response = service.newGame();
+        GameResponse response = service.newGame(3);
         assertNotNull(response);
         assertEquals(9, response.getBoard().size());
         assertEquals("0", response.getBoard().get(0));
@@ -156,5 +156,32 @@ class TicTacToeServiceTest {
         assertEquals(GameStatus.IN_PROGRESS, response.getStatus());
         assertEquals("Move accepted. X's turn.", response.getMessage());
         assertEquals("O", response.getBoard().get(0)); // Proves the move was placed
+    }
+
+    @Test
+    @DisplayName("New Game with null size: Successfully initializes a default 9-slot board")
+    void whenNewGameWithSizeNull_thenInitializeDefaultBoard() {
+        GameResponse response = service.newGame(null);
+        assertNotNull(response);
+        assertEquals(9, response.getBoard().size());
+        assertEquals(GameStatus.IN_PROGRESS, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("New Game with valid custom size: Successfully initializes a custom board")
+    void whenNewGameWithSizeValid_thenInitializeCustomBoard() {
+        GameResponse response = service.newGame(4);
+        assertNotNull(response);
+        assertEquals(16, response.getBoard().size());
+        assertEquals(GameStatus.IN_PROGRESS, response.getStatus());
+    }
+
+    @Test
+    @DisplayName("New Game with invalid small size: Defaults to 9-slot board")
+    void whenNewGameWithSizeInvalidLessThanMin_thenInitializeDefaultBoard() {
+        GameResponse response = service.newGame(2);
+        assertNotNull(response);
+        assertEquals(9, response.getBoard().size());
+        assertEquals(GameStatus.IN_PROGRESS, response.getStatus());
     }
 }

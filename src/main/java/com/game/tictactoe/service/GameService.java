@@ -5,6 +5,6 @@ import com.game.tictactoe.model.GameResponse;
 
 public interface GameService {
 
-    GameResponse newGame();
+    GameResponse newGame(Integer size);
     GameResponse continueGame(GameRequest request);
 }

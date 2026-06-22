@@ -142,7 +142,7 @@
 					<excludes>
 						<exclude>com/game/tictactoe/model/**/*</exclude>
 						<exclude>com/game/tictactoe/api/**/*</exclude>
-						<exclude>com/game/tictactoe/TictactoeapiApplication.class</exclude>
+						<exclude>com/game/tictactoe/TictactoeApplication.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -187,7 +187,7 @@
 					</jvmArgs>
 					<threads>4</threads>
 					<excludedClasses>
-						<param>com.game.tictactoe.TictactoeapiApplication</param>
+						<param>com.game.tictactoe.TictactoeApplication</param>
 						<param>com.game.tictactoe.api.*</param>
 						<param>com.game.tictactoe.model.*</param>
 					</excludedClasses>

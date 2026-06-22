@@ -23,8 +23,10 @@ public class TicTacToeService implements GameService {
     private final GameResponseFactory factory;
 
     @Override
-    public GameResponse newGame() {
-        var initialBoard = IntStream.range(MIN_INDEX, DEFAULT_ARRAY_SIZE)
+    public GameResponse newGame(Integer size) {
+        int boardSize = Math.max(size != null ? size : DEFAULT_BOARD_SIZE, DEFAULT_BOARD_SIZE);
+        int totalSpots = boardSize * boardSize;
+        var initialBoard = IntStream.range(MIN_INDEX, totalSpots)
                 .mapToObj(String::valueOf)
                 .toList();
         return factory.create(initialBoard, GameStatus.IN_PROGRESS, GAME_INIT_MESSAGE);

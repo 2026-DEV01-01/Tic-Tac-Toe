@@ -2,44 +2,41 @@ package com.game.tictactoe.ruleengine;
 
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.game.tictactoe.constants.TicTacToeConstants.*;
 
 @Component
 public class TicTacToeRuleEngine implements GameRuleEngine {
 
-    private static final int BOARD_DIMENSION = DEFAULT_BOARD_SIZE;
-    private static final int[][] WIN_COMBINATIONS = generateWinCombinations(BOARD_DIMENSION);
+    private final Map<Integer, int[][]> winCombinationsCache = new ConcurrentHashMap<>();
 
-    private static int[][] generateWinCombinations(int n) {
-        var combinations = new ArrayList<int[]>();
-        for (int i = 0; i < n; i++) {
-            var row = new int[n];
-            var col = new int[n];
-            for (int j = 0; j < n; j++) {
-                row[j] = i * n + j;
-                col[j] = j * n + i;
-            }
-            combinations.add(row);
-            combinations.add(col);
-        }
-        var mainDiagonal = new int[n];
-        var antiDiagonal = new int[n];
-        for (int i = 0; i < n; i++) {
-            mainDiagonal[i] = i * n + i;
-            antiDiagonal[i] = i * n + (n - 1 - i);
-        }
-        combinations.add(mainDiagonal);
-        combinations.add(antiDiagonal);
-        return combinations.toArray(int[][]::new);
+    private int[][] getWinCombinations(int boardSize) {
+        return winCombinationsCache.computeIfAbsent(boardSize, this::generateWinCombinations);
+    }
+
+    private int[][] generateWinCombinations(int boardSize) {
+        var rows = IntStream.range(MIN_INDEX, boardSize)
+                .mapToObj(i -> IntStream.range(MIN_INDEX, boardSize).map(j -> i * boardSize + j).toArray());
+        var columns = IntStream.range(MIN_INDEX, boardSize)
+                .mapToObj(j -> IntStream.range(MIN_INDEX, boardSize).map(i -> i * boardSize + j).toArray());
+        var diagonals = Stream.of(
+                IntStream.range(MIN_INDEX, boardSize).map(i -> i * boardSize + i).toArray(),
+                IntStream.range(MIN_INDEX, boardSize).map(i -> i * boardSize + (boardSize - 1 - i)).toArray()
+        );
+        return Stream.concat(Stream.concat(rows, columns), diagonals).toArray(int[][]::new);
     }
 
     @Override
     public boolean checkWinner(List<String> board) {
-        for (var combo : WIN_COMBINATIONS) {
+        int n = (int) Math.sqrt(board.size());
+        int[][] combinations = getWinCombinations(n);
+        for (var combo : combinations) {
             var firstSpot = board.get(combo[0]);
             if (PLAYER_X.equals(firstSpot) || PLAYER_O.equals(firstSpot)) {
                 boolean isWin = Arrays.stream(combo)

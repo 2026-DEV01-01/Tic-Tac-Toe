@@ -93,4 +93,53 @@ class TicTacToeRuleEngineTest {
         List<String> board = Arrays.asList("O", "O", "O", "3", "4", "5", "6", "7", "8");
         assertTrue(ruleEngine.checkWinner(board));
     }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Row 1")
+    void givenWinningBoardRow1_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("0", "1", "2", "X", "X", "X", "6", "7", "8");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Row 2")
+    void givenWinningBoardRow2_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("0", "1", "2", "3", "4", "5", "X", "X", "X");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Column 0")
+    void givenWinningBoardCol0_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("X", "1", "2", "X", "4", "5", "X", "7", "8");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Column 1")
+    void givenWinningBoardCol1_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("0", "X", "2", "3", "X", "5", "6", "X", "8");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Column 2")
+    void givenWinningBoardCol2_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("0", "1", "X", "3", "4", "X", "6", "7", "X");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Main Diagonal")
+    void givenWinningBoardMainDiag_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("X", "1", "2", "3", "X", "5", "6", "7", "X");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
+
+    @Test
+    @DisplayName("Rules: Detects a winning combination on Anti-Diagonal")
+    void givenWinningBoardAntiDiag_whenCheckingWinner_thenReturnTrue() {
+        List<String> board = Arrays.asList("0", "1", "X", "3", "X", "5", "X", "7", "8");
+        assertTrue(ruleEngine.checkWinner(board));
+    }
 }

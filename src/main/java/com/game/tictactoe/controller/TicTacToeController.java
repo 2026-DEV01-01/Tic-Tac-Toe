@@ -16,8 +16,8 @@ public class TicTacToeController implements GameApi {
     private final GameService gameService;
 
     @Override
-    public ResponseEntity<GameResponse> initGame() {
-        GameResponse response = gameService.newGame();
+    public ResponseEntity<GameResponse> initGame(Integer size) {
+        GameResponse response = gameService.newGame(size);
         return ResponseEntity.ok(response);
     }
 

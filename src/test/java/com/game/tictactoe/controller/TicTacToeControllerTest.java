@@ -50,12 +50,12 @@ class TicTacToeControllerTest {
     @Test
     @DisplayName("Init Game: Returns 200 OK and valid GameResponse")
     void whenInitGame_thenReturnOkResponseEntity() {
-        when(gameService.newGame()).thenReturn(mockResponse);
-        ResponseEntity<GameResponse> responseEntity = controller.initGame();
+        when(gameService.newGame(3)).thenReturn(mockResponse);
+        ResponseEntity<GameResponse> responseEntity = controller.initGame(3);
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(mockResponse, responseEntity.getBody());
-        verify(gameService, times(1)).newGame();
+        verify(gameService, times(1)).newGame(3);
     }
 
     @Test
